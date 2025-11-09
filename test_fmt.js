@@ -72,6 +72,8 @@ const cs = new w.CodeSection(ds)
     }
     // await writeFile('./fdb.asm', generateAsm(ds,cs))
     // console.log(cs,ds)
+    cs.require('./lib/libkernel32.a')
+    cs.addCall('ExitProcess', 0)
     const output = await w.compile(
         cs,
         ds

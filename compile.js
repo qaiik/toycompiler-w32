@@ -31,10 +31,16 @@ exports.compile = async function compile(cs, ds) {
     await unlink(path.resolve(output_obj))
     await unlink(path.resolve(asm_p))
     const binBuf = await readFile(out_p)
-    const libBuf = await readFile(out_p.split('.')[0] + '.lib')
+    let libBuf;
+    try {
+        libBuf = await readFile(out_p.split('.')[0] + '.lib')
+    } catch {
+        libBuf = null;
+    }
+    
 
     await unlink(out_p)
-    await unlink(out_p.split('.')[0] + '.lib')
+    if (libBuf != null) await unlink(out_p.split('.')[0] + '.lib')
     return {
         bin: binBuf,
         lib: libBuf
